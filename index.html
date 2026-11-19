@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="GATE ECE Study OS — a focused, offline-first command center for syllabus tracking, mistake review, mock analysis and deep work." />
+  <meta name="theme-color" content="#080b12" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>GATE ECE Study OS</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230ea5e9'/%3E%3Cpath d='M18 44V27l14-9 14 9v17h-9V32h-10v12z' fill='%23071320'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+
+  <!-- ============ SVG ICON SPRITE ============ -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.7 12 3l9 7.7"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.5 3.1 7.7 7.5 9 4.4-1.3 7.5-4.5 7.5-9V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-4.7"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V11M11 20V5M16 20v-6M21 20V8"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.7 4.8L18.5 9.5l-4.8 1.7L12 16l-1.7-4.8L5.5 9.5l4.8-1.7L12 3Z"/><path d="M18.5 15.5 19.4 18l2.5.9-2.5.9-.9 2.5-.9-2.5-2.5-.9 2.5-.9.9-2.5Z"/><path d="M5 16.5 5.6 18l1.5.5-1.5.5L5 20.5l-.6-1.5L3 18.5l1.5-.5L5 16.5Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5L8 5.5Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16.5 9"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/><path d="M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L20 8l-4-4L4 16v4Z"/><path d="m14 6 4 4"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2.5h7L17 8h3a1.5 1.5 0 0 1 1.5 1.5V19a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 19V9.5A1.5 1.5 0 0 1 4 8Z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3.5-.5 4.8-2 6.3C8.3 11 7 12.7 7 15a5 5 0 0 0 10 0c0-1.7-.7-3.3-1.8-4.7-.6 1-1.3 1.6-2.2 2 .7-3.4-.3-6.6-1-9.3Z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3M7 8l5-5 5 5"/><path d="M4 19h16"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 14 18 8Z"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 10v4h3l4 3.5v-11L7 10H4Z"/><path d="M15 9a4.5 4.5 0 0 1 0 6M17.8 6.5a8.5 8.5 0 0 1 0 11"/></symbol>
+    <symbol id="i-volume-off" viewBox="0 0 24 24"><path d="M4 10v4h3l4 3.5v-11L7 10H4Z"/><path d="m15 9 6 6M21 9l-6 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17.2h.01"/></symbol>
+    <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-minimize" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2.5-7.5L3 11Z"/><path d="M10.5 13.5 21 3"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 5-4 4 3 2.5-2 4.5 3.5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></symbol>
+    <symbol id="i-trending" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="m8.5 13.5-1.5 8 5-2.8 5 2.8-1.5-8"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 6c.5-.1.9-.1 1.4-.1 6 0 9.5 6.1 9.5 6.1a17 17 0 0 1-2.4 3.2M6.4 6.9A17 17 0 0 0 2.5 12S6 18.1 12 18.1c1.6 0 3-.4 4.2-1"/><path d="M9.9 10.2a3 3 0 0 0 4 4.1"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h2a2.5 2.5 0 0 1 0 5h-2M6 3v2M10 3v2M14 3v2"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-16.2 5.2M3 12a9 9 0 0 1 16.2-5.2"/><path d="M21 4v5h-5M3 20v-5h5"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l2 2M14 9l2 2"/></symbol>
+    <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M8.5 8.7A15 15 0 0 1 21 9.5M5 12.5a11 11 0 0 1 4-2M2.5 9.5A16 16 0 0 1 6 7.6M8.5 16a4 4 0 0 1 7 0"/><path d="M12 20h.01"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h10M18 18h2"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+    <symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.7 2.7 0 0 1 5.2 1c0 1.8-2.7 2-2.7 3.7"/><path d="M12 17.3h.01"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5V3h6v1.5M9 10h6M9 14h6M9 18h4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17.3 6.5 20.2l1.1-6.2L3 9.6l6.3-.9L12 3Z"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <!-- ============ SIDEBAR (desktop) ============ -->
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand">
+        <div class="brand-mark"><svg class="i"><use href="#i-layers"/></svg></div>
+        <div>
+          <div class="brand-name">GATE ECE Study OS</div>
+          <div class="brand-sub">2027 · focus &amp; recall</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Workspace</div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-btn" data-nav="dashboard" type="button"><svg class="i"><use href="#i-home"/></svg> Dashboard</button>
+        <button class="nav-btn" data-nav="planner" type="button"><svg class="i"><use href="#i-calendar"/></svg> Planner &amp; Syllabus <span class="badge-count" id="sideTaskBadge">0</span></button>
+        <button class="nav-btn" data-nav="vault" type="button"><svg class="i"><use href="#i-shield"/></svg> Mistake Vault <span class="badge-count" id="sideVaultBadge">0</span></button>
+        <button class="nav-btn" data-nav="tests" type="button"><svg class="i"><use href="#i-chart"/></svg> Tests &amp; Journal</button>
+        <button class="nav-btn" data-nav="coach" type="button"><svg class="i"><use href="#i-sparkles"/></svg> AI Coach <span class="badge-count" id="sideDueBadge">0</span></button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="row"><span>Syllabus mastery</span><strong id="sideSyllabusPct">0%</strong></div>
+        <div class="sidebar-progress"><span id="sideSyllabusBar" style="width:0%"></span></div>
+        <div class="row"><span>Target</span><strong id="sideTarget">78+</strong></div>
+        <div class="sidebar-exam mt-2"><svg class="i i-sm"><use href="#i-clock"/></svg> <strong id="sideDaysLeft">—</strong> days to exam</div>
+      </div>
+
+      <div class="sidebar-foot">
+        <button class="icon-btn" type="button" data-open-focus aria-label="Open focus mode" title="Focus mode (Alt+F)"><svg class="i"><use href="#i-maximize"/></svg></button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle dark / light"><svg class="i" data-theme-icon><use href="#i-sun"/></svg></button>
+        <button class="icon-btn" type="button" data-open-settings aria-label="Settings" title="Settings"><svg class="i"><use href="#i-settings"/></svg></button>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <div class="main-wrap">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSubtitle">Your GATE ECE command center</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="chip sky nowrap" id="examChip" title="Days until your target exam date"><svg class="i i-sm"><use href="#i-calendar"/></svg> <span id="examChipText">—</span></span>
+          <button class="timer-chip" id="topTimerBtn" type="button" data-open-focus aria-label="Open focus mode">
+            <span class="dot" id="topTimerDot"></span><span id="topTimerTime">25:00</span>
+          </button>
+          <button class="icon-btn ghost" type="button" data-theme-toggle aria-label="Toggle theme"><svg class="i" data-theme-icon><use href="#i-sun"/></svg></button>
+          <button class="icon-btn ghost" type="button" data-open-settings aria-label="Settings"><svg class="i"><use href="#i-settings"/></svg></button>
+        </div>
+      </header>
+
+      <div class="reminder-bar" id="reminderBar" hidden>
+        <svg class="i"><use href="#i-bell"/></svg>
+        <span id="reminderText">You have a study reminder.</span>
+        <button class="btn btn-sm btn-ghost" type="button" id="reminderViewBtn">View task</button>
+        <button class="icon-btn ghost" type="button" id="reminderDismissBtn" aria-label="Dismiss reminder"><svg class="i i-sm"><use href="#i-x"/></svg></button>
+      </div>
+
+      <main class="main-content" id="mainContent">
+        <!-- ============ DASHBOARD ============ -->
+        <section class="view active" data-view="dashboard" id="view-dashboard" aria-labelledby="pageTitle">
+          <div id="demoBannerSlot"></div>
+          <div id="heroCard"></div>
+
+          <div class="grid dashboard-timer-grid mt-3">
+            <!-- Focus timer -->
+            <div class="card timer-card" id="timerCard">
+              <div class="timer-top">
+                <div class="row">
+                  <svg class="i" style="color:var(--accent)"><use href="#i-clock"/></svg>
+                  <h3 class="mb-0" style="font-size:13.5px">Deep Work</h3>
+                </div>
+                <div class="timer-presets" role="group" aria-label="Timer presets">
+                  <button type="button" data-preset="25" class="active">25m</button>
+                  <button type="button" data-preset="50">50m</button>
+                  <button type="button" data-preset="90">90m</button>
+                </div>
+              </div>
+
+              <div class="timer-center">
+                <div class="timer-ringwrap">
+                  <svg viewBox="0 0 160 160" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="timerGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#818cf8"/>
+                      </linearGradient>
+                    </defs>
+                    <circle class="timer-ring-bg" cx="80" cy="80" r="66"/>
+                    <circle class="timer-ring-fg" id="timerRing" cx="80" cy="80" r="66" stroke-dasharray="414.69" stroke-dashoffset="0"/>
+                  </svg>
+                  <div class="timer-time">
+                    <div>
+                      <strong class="js-timer-time" id="mainTimerTime">25:00</strong>
+                      <span id="mainTimerPhase">Focus block</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="timer-meta">
+                  <span class="label">Focusing on</span>
+                  <select class="select js-subject-select" id="focusSubjectSelect" aria-label="Focus subject" style="min-height:34px;padding:5px 28px 5px 9px;font-size:11.5px">
+                    <!-- populated -->
+                  </select>
+                  <div class="timer-controls">
+                    <button class="btn btn-primary" type="button" id="timerToggleBtn" data-timer-toggle><svg class="i"><use href="#i-play"/></svg><span>Start</span></button>
+                    <button class="btn" type="button" id="timerResetBtn" data-timer-reset aria-label="Reset timer" title="Reset"><svg class="i"><use href="#i-reset"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timer-controls">
+                <button class="btn" type="button" data-distraction style="flex:1"><svg class="i" style="color:var(--warn)"><use href="#i-alert"/></svg> Distracted?</button>
+                <button class="btn" type="button" data-noise style="flex:1"><svg class="i"><use href="#i-volume"/></svg><span class="js-noise-label">Focus noise</span></button>
+                <button class="btn" type="button" data-open-focus aria-label="Full screen focus"><svg class="i"><use href="#i-maximize"/></svg></button>
+              </div>
+
+              <div class="timer-foot">
+                <span>Today: <strong id="timerTodayFocus">0m</strong></span>
+                <span>Distractions: <strong id="timerTodayDistract">0</strong></span>
+                <span class="row" style="gap:4px"><svg class="i i-sm" style="color:var(--warn)"><use href="#i-flame"/></svg><strong id="timerStreak">0d</strong></span>
+              </div>
+            </div>
+
+            <!-- Overview (rendered) -->
+            <div id="dashOverview"></div>
+          </div>
+
+          <div class="grid grid-4 mt-3" id="kpiGrid"></div>
+
+          <div class="grid grid-2 mt-3">
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h3><svg class="i"><use href="#i-layers"/></svg> Subject readiness</h3>
+                  <p>Official Sections 1–8 + General Aptitude · theory · notes · PYQs</p>
+                </div>
+                <button class="btn btn-sm btn-ghost" type="button" data-go="planner">Open <svg class="i"><use href="#i-arrow-right"/></svg></button>
+              </div>
+              <div id="subjectBars"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h3><svg class="i"><use href="#i-target"/></svg> Where marks leak</h3>
+                  <p>Top weak topics and root causes from your vault</p>
+                </div>
+                <button class="btn btn-sm btn-ghost" type="button" data-go="vault">Vault <svg class="i"><use href="#i-arrow-right"/></svg></button>
+              </div>
+              <div id="weakPanel"></div>
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-head">
+              <div>
+                <h3><svg class="i"><use href="#i-zap"/></svg> Due for active recall</h3>
+                <p>Spaced repetition: 1 → 3 → 7 → 21 → 45 days</p>
+              </div>
+              <button class="btn btn-sm btn-primary" type="button" id="startDeckDash"><svg class="i"><use href="#i-layers"/></svg> Start review</button>
+            </div>
+            <div id="dueQueue"></div>
+          </div>
+
+          <div class="grid grid-2 mt-3">
+            <div class="card">
+              <div class="card-head">
+                <div><h3><svg class="i"><use href="#i-clipboard"/></svg> Today's plan</h3><p>Tasks and reminders for today</p></div>
+                <button class="btn btn-sm btn-ghost" type="button" data-go="planner">All tasks</button>
+              </div>
+              <div id="dashTasks" class="list"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div><h3><svg class="i"><use href="#i-shield"/></svg> Recent traps</h3><p>Most recent entries in your error vault</p></div>
+                <button class="btn btn-sm btn-ghost" type="button" id="dashAddMistake">Add</button>
+              </div>
+              <div id="dashMistakes" class="list"></div>
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-head">
+              <div>
+                <h3><svg class="i"><use href="#i-calendar"/></svg> 7-day review</h3>
+                <p>Focus time, completed tasks, reviews and mock results</p>
+              </div>
+              <div class="row wrap">
+                <button class="btn btn-sm" type="button" id="exportWeekBtn"><svg class="i"><use href="#i-download"/></svg> Weekly report</button>
+              </div>
+            </div>
+            <div id="weeklyReview"></div>
+          </div>
+        </section>
+
+        <!-- ============ PLANNER ============ -->
+        <section class="view" data-view="planner" id="view-planner">
+          <div class="view-head">
+            <div><h2>Planner &amp; syllabus</h2><p>Plan the week, then track every subtopic to PYQ level.</p></div>
+            <div class="view-head-actions">
+              <span class="chip sky" id="syllabusOverallChip"><svg class="i i-sm"><use href="#i-layers"/></svg> 0% complete</span>
+            </div>
+          </div>
+
+          <div id="demoBannerSlotPlanner"></div>
+
+          <div class="grid planner-grid">
+            <div class="stack">
+              <div class="card task-form-card">
+                <div class="card-head">
+                  <div><h3><svg class="i"><use href="#i-plus"/></svg> <span id="taskFormTitle">Assign a study task</span></h3><p id="taskFormSub">Make it specific, measurable and time-boxed.</p></div>
+                </div>
+                <form id="taskForm" novalidate>
+                  <input type="hidden" id="taskEditId" />
+                  <div class="form-grid">
+                    <div class="field span-2">
+                      <label for="taskTitle">Task description</label>
+                      <input class="input" id="taskTitle" maxlength="160" placeholder="e.g. Solve 20 Bode plot PYQs (timed)" required />
+                    </div>
+                    <div class="field">
+                      <label for="taskSubject">Subject</label>
+                      <select class="select" id="taskSubject"></select>
+                    </div>
+                    <div class="field">
+                      <label for="taskType">Task type</label>
+                      <select class="select" id="taskType">
+                        <option>PYQ practice</option>
+                        <option>Theory &amp; concepts</option>
+                        <option>Revision &amp; notes</option>
+                        <option>Mock analysis</option>
+                        <option>Formula drill</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="taskPriority">Priority</label>
+                      <select class="select" id="taskPriority"><option>High</option><option selected>Medium</option><option>Low</option></select>
+                    </div>
+                    <div class="field">
+                      <label for="taskDate">Reminder date</label>
+                      <input class="input" type="date" id="taskDate" />
+                    </div>
+                    <div class="field">
+                      <label for="taskTime">Reminder time</label>
+                      <input class="input" type="time" id="taskTime" />
+                    </div>
+                    <div class="form-actions span-2">
+                      <button class="btn btn-ghost" type="button" id="taskCancelBtn" hidden>Cancel edit</button>
+                      <button class="btn btn-primary" type="submit" id="taskSubmitBtn"><svg class="i"><use href="#i-plus"/></svg> Add task</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="card">
+                <div class="card-head">
+                  <div><h3><svg class="i"><use href="#i-list"/></svg> Your tasks</h3><p id="taskCountLabel">0 tasks</p></div>
+                </div>
+                <div class="filters" style="margin-bottom:10px">
+                  <div class="seg" role="group" aria-label="Filter tasks">
+                    <button type="button" class="active" data-task-filter="all">All</button>
+                    <button type="button" data-task-filter="pending">Pending</button>
+                    <button type="button" data-task-filter="done">Done</button>
+                  </div>
+                  <button class="btn btn-sm btn-ghost" type="button" id="clearDoneTasks">Clear done</button>
+                </div>
+                <div id="taskList" class="list list-scroll"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <div><h3><svg class="i"><use href="#i-book"/></svg> Syllabus matrix</h3><p>63 subtopics · check theory, notes and PYQs as you go.</p></div>
+                <span class="chip dim" id="syllabusLegend">T · N · P</span>
+              </div>
+              <div id="syllabusList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ VAULT ============ -->
+        <section class="view" data-view="vault" id="view-vault">
+          <div class="view-head">
+            <div><h2>Mistake vault</h2><p>Capture the trap, write the fix, review before it repeats.</p></div>
+            <div class="view-head-actions">
+              <button class="btn" type="button" id="startDeckBtn"><svg class="i"><use href="#i-layers"/></svg> Review deck</button>
+              <button class="btn btn-primary" type="button" id="vaultAddBtn"><svg class="i"><use href="#i-plus"/></svg> Log mistake</button>
+            </div>
+          </div>
+
+          <div id="demoBannerSlotVault"></div>
+
+          <div class="card">
+            <div class="vault-toolbar">
+              <div class="search-wrap">
+                <svg class="i"><use href="#i-search"/></svg>
+                <input class="input" id="vaultSearch" type="search" placeholder="Search a trap, formula, topic or fix…" autocomplete="off" />
+              </div>
+              <select class="select" id="vaultSubject" aria-label="Filter by subject"><option value="ALL">All subjects</option></select>
+              <select class="select" id="vaultCause" aria-label="Filter by cause"><option value="ALL">All causes</option></select>
+              <select class="select" id="vaultStatus" aria-label="Filter by status">
+                <option value="ALL">All cards</option>
+                <option value="active">Active</option>
+                <option value="due">Due now</option>
+                <option value="mastered">Mastered</option>
+              </select>
+              <select class="select" id="vaultSort" aria-label="Sort cards">
+                <option value="recent">Newest first</option>
+                <option value="due">Most overdue</option>
+                <option value="loss">Most marks lost</option>
+                <option value="box">Lowest box</option>
+              </select>
+            </div>
+            <div class="vault-stats mt-3" id="vaultStats"></div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="row-between" style="margin-bottom:10px">
+              <span class="small muted" id="vaultCountLabel">0 cards</span>
+              <span class="tiny faint">Tap a card to expand the fix</span>
+            </div>
+            <div id="vaultList"></div>
+          </div>
+        </section>
+
+        <!-- ============ TESTS ============ -->
+        <section class="view" data-view="tests" id="view-tests">
+          <div class="view-head">
+            <div><h2>Tests &amp; journal</h2><p>Track scores honestly, then extract the lesson.</p></div>
+            <div class="view-head-actions">
+              <button class="btn btn-primary" type="button" id="focusMockForm"><svg class="i"><use href="#i-plus"/></svg> Log mock</button>
+            </div>
+          </div>
+
+          <div id="demoBannerSlotTests"></div>
+
+          <div class="grid tests-grid">
+            <div class="stack">
+              <div class="card">
+                <div class="card-head">
+                  <div><h3><svg class="i"><use href="#i-trending"/></svg> Score trend</h3><p>Chronological mock scores; consistency beats one spike.</p></div>
+                  <span class="chip violet" id="mockAvgChip">—</span>
+                </div>
+                <div class="chart-wrap" id="scoreChart"></div>
+                <div class="grid grid-3 mt-3" id="mockStats"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><h3><svg class="i"><use href="#i-list"/></svg> Mock history</h3><p id="mockCountLabel">No mocks yet</p></div></div>
+                <div id="mockList" class="mock-list"></div>
+              </div>
+            </div>
+
+            <div class="card" id="mockFormCard">
+              <div class="card-head">
+                <div><h3><svg class="i"><use href="#i-plus"/></svg> <span id="mockFormTitle">Log a mock</span></h3><p>Every mock should produce at least one vault entry.</p></div>
+              </div>
+              <form id="mockForm" novalidate>
+                <input type="hidden" id="mockEditId" />
+                <div class="form-grid">
+                  <div class="field span-2">
+                    <label for="mockName">Mock name</label>
+                    <input class="input" id="mockName" required maxlength="120" placeholder="Full length mock #4" />
+                  </div>
+                  <div class="field">
+                    <label for="mockDate">Date</label>
+                    <input class="input" type="date" id="mockDate" required />
+                  </div>
+                  <div class="field">
+                    <label for="mockType">Type</label>
+                    <select class="select" id="mockType">
+                      <option>Full syllabus</option>
+                      <option>Subject test</option>
+                      <option>Topic test</option>
+                      <option>Sectional</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="mockScore">Score</label>
+                    <input class="input" id="mockScore" type="number" step="0.01" min="0" required placeholder="62.33" />
+                  </div>
+                  <div class="field">
+                    <label for="mockTotal">Out of</label>
+                    <input class="input" id="mockTotal" type="number" step="1" min="1" value="100" required />
+                  </div>
+                  <div class="field">
+                    <label for="mockRight">Correct</label>
+                    <input class="input" id="mockRight" type="number" min="0" step="1" value="0" />
+                  </div>
+                  <div class="field">
+                    <label for="mockWrong">Wrong</label>
+                    <input class="input" id="mockWrong" type="number" min="0" step="1" value="0" />
+                  </div>
+                  <div class="field">
+                    <label for="mockNeg">Negative marks</label>
+                    <input class="input" id="mockNeg" type="number" min="0" step="0.01" value="0" />
+                  </div>
+                  <div class="field span-2">
+                    <label for="mockNotes">Key lesson</label>
+                    <textarea class="textarea" id="mockNotes" rows="2" placeholder="What cost you marks? What will you do differently?"></textarea>
+                  </div>
+                  <div class="form-actions span-2">
+                    <button class="btn btn-ghost" type="button" id="mockCancelBtn" hidden>Cancel edit</button>
+                    <button class="btn btn-primary" type="submit" id="mockSubmitBtn"><svg class="i"><use href="#i-plus"/></svg> Save mock</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-head">
+              <div><h3><svg class="i"><use href="#i-book"/></svg> Study journal</h3><p>Daily evidence: wins, losses and the one fix.</p></div>
+            </div>
+            <form id="journalForm" class="form-grid cols-3" novalidate>
+              <div class="field">
+                <label for="journalType">Entry type</label>
+                <select class="select" id="journalType"><option>Win</option><option>Loss</option><option>Insight</option></select>
+              </div>
+              <div class="field span-2">
+                <label for="journalText">What happened?</label>
+                <input class="input" id="journalText" required maxlength="240" placeholder="Solved 30 control systems PYQs at 90% accuracy." />
+              </div>
+              <div class="field span-2">
+                <label for="journalFix">One change for tomorrow (optional)</label>
+                <input class="input" id="journalFix" maxlength="200" placeholder="Keep the phone outside the room." />
+              </div>
+              <div class="form-actions" style="align-self:end">
+                <button class="btn btn-primary" type="submit"><svg class="i"><use href="#i-plus"/></svg> Add entry</button>
+              </div>
+            </form>
+            <div id="journalList" class="stack mt-3"></div>
+          </div>
+        </section>
+
+        <!-- ============ COACH ============ -->
+        <section class="view" data-view="coach" id="view-coach">
+          <div class="view-head">
+            <div><h2>AI study coach</h2><p>Data-driven guidance. Works offline; connect a model for deeper explanations.</p></div>
+            <div class="view-head-actions">
+              <span class="ai-status offline" id="aiStatus"><span class="dot"></span> <span id="aiStatusText">Offline coach</span></span>
+            </div>
+          </div>
+
+          <div class="coach-layout">
+            <div class="card">
+              <div class="card-head">
+                <div><h3><svg class="i"><use href="#i-sparkles"/></svg> Coach chat</h3><p>Grounded in your tasks, mocks, syllabus and vault.</p></div>
+                <button class="icon-btn" type="button" id="clearChatBtn" title="Clear chat" aria-label="Clear chat"><svg class="i"><use href="#i-trash"/></svg></button>
+              </div>
+              <div class="chat-log" id="chatLog" aria-live="polite"></div>
+              <div id="aiSuggestionSlot"></div>
+              <div class="quick-prompts mt-2" id="quickPrompts">
+                <button class="btn btn-sm" type="button" data-prompt="Build me a realistic 7-day study plan using my current weak areas.">7-day plan</button>
+                <button class="btn btn-sm" type="button" data-prompt="Analyse my weakest subject and tell me exactly what to fix first.">Weakest subject</button>
+                <button class="btn btn-sm" type="button" data-prompt="Give me 5 targeted practice drills for my top mistake causes.">5 drills</button>
+                <button class="btn btn-sm" type="button" data-prompt="I have 2 hours today. What is the highest-leverage thing I should do?">2-hour plan</button>
+                <button class="btn btn-sm" type="button" data-prompt="Review my mock trend and tell me if I am improving.">Mock trend</button>
+              </div>
+              <form class="chat-form" id="chatForm">
+                <textarea class="textarea" id="chatInput" rows="2" placeholder="Ask about your plan or next move…" aria-label="Message the coach"></textarea>
+                <button class="btn btn-primary" type="submit" id="chatSendBtn" aria-label="Send"><svg class="i"><use href="#i-send"/></svg></button>
+              </form>
+              <div class="ai-config">
+                <button class="btn btn-sm btn-ghost" type="button" id="aiConfigToggle" aria-expanded="false"><svg class="i"><use href="#i-key"/></svg> Connect a language model</button>
+                <div id="aiConfigPanel" hidden class="mt-2">
+                  <div class="form-grid cols-2">
+                    <div class="field">
+                      <label for="aiProvider">Provider</label>
+                      <select class="select" id="aiProvider">
+                        <option value="offline">Offline coach only (recommended)</option>
+                        <option value="gemini">Google Gemini (direct)</option>
+                        <option value="openai">OpenAI-compatible API</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="aiModel">Model</label>
+                      <input class="input" id="aiModel" placeholder="gemini-2.5-flash" autocomplete="off" />
+                    </div>
+                    <div class="field span-2" id="aiBaseWrap" hidden>
+                      <label for="aiBaseUrl">Base URL</label>
+                      <input class="input" id="aiBaseUrl" placeholder="https://api.openai.com/v1" autocomplete="off" />
+                    </div>
+                    <div class="field span-2">
+                      <label for="aiKey">API key <span class="faint">(stored only in this browser)</span></label>
+                      <input class="input" id="aiKey" type="password" placeholder="Paste key — leave blank to stay offline" autocomplete="off" />
+                    </div>
+                    <div class="form-actions span-2">
+                      <button class="btn btn-sm" type="button" id="aiTestBtn">Test connection</button>
+                      <button class="btn btn-sm btn-primary" type="button" id="aiSaveBtn">Save settings</button>
+                    </div>
+                  </div>
+                  <p class="tiny faint mt-2 mb-0"><svg class="i i-sm" style="vertical-align:-2px"><use href="#i-lock"/></svg> The key never leaves this browser. Direct browser calls may be blocked by a provider's CORS policy; if so, use an OpenAI-compatible proxy URL.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="stack">
+              <div class="card">
+                <div class="card-head"><div><h3><svg class="i"><use href="#i-database"/></svg> Snapshot used by coach</h3><p>Live, private and local</p></div></div>
+                <div id="coachSnapshot"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><h3><svg class="i"><use href="#i-info"/></svg> How to get value</h3></div></div>
+                <ul class="small muted" style="margin:0;padding-left:16px;line-height:1.7">
+                  <li>Ask for a plan after logging 3+ mistakes.</li>
+                  <li>Use “2-hour plan” when you feel overwhelmed.</li>
+                  <li>Turn suggestions into tasks with one tap.</li>
+                  <li>Connect a model only for concept explanations.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ============ BOTTOM NAV (mobile) ============ -->
+    <nav class="bottom-nav" aria-label="Mobile navigation">
+      <button type="button" data-nav="dashboard" aria-current="page"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button>
+      <button type="button" data-nav="planner"><svg class="i"><use href="#i-calendar"/></svg><span>Plan</span></button>
+      <button type="button" data-nav="vault"><svg class="i"><use href="#i-shield"/></svg><span>Vault</span><span class="badge-count hot" id="mobileVaultBadge" hidden>0</span></button>
+      <button type="button" data-nav="tests"><svg class="i"><use href="#i-chart"/></svg><span>Tests</span></button>
+      <button type="button" data-nav="coach"><svg class="i"><use href="#i-sparkles"/></svg><span>Coach</span></button>
+    </nav>
+  </div>
+
+  <!-- ============ FOCUS OVERLAY ============ -->
+  <div class="focus-overlay" id="focusOverlay" role="dialog" aria-modal="true" aria-labelledby="focusOverlayTitle">
+    <div class="focus-overlay-top">
+      <div class="row"><svg class="i" style="color:var(--accent)"><use href="#i-maximize"/></svg><strong id="focusOverlayTitle" style="font-size:13px">Deep work session</strong></div>
+      <button class="icon-btn" type="button" data-close-focus aria-label="Close focus mode"><svg class="i"><use href="#i-minimize"/></svg></button>
+    </div>
+    <div class="focus-overlay-main">
+      <div class="timer-ringwrap">
+        <svg viewBox="0 0 160 160" aria-hidden="true">
+          <defs>
+            <linearGradient id="timerGrad2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#818cf8"/>
+            </linearGradient>
+          </defs>
+          <circle class="timer-ring-bg" cx="80" cy="80" r="66"/>
+          <circle class="timer-ring-fg" id="focusRing" cx="80" cy="80" r="66" stroke="url(#timerGrad2)" stroke-dasharray="414.69" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-time">
+          <div>
+            <strong class="js-timer-time">25:00</strong>
+            <span id="focusOverlayPhase">Focus block</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="focus-overlay-sub">Focusing on <strong id="focusOverlaySubject">Signals &amp; Systems</strong></p>
+        <p class="focus-overlay-sub small" id="focusOverlayHint">One block. One subject. No notifications.</p>
+      </div>
+      <div class="focus-overlay-controls">
+        <button class="btn btn-primary" type="button" data-timer-toggle><svg class="i"><use href="#i-play"/></svg><span>Start</span></button>
+        <button class="btn" type="button" data-timer-reset aria-label="Reset timer"><svg class="i"><use href="#i-reset"/></svg></button>
+        <button class="btn" type="button" data-distraction><svg class="i" style="color:var(--warn)"><use href="#i-alert"/></svg> Distracted</button>
+        <button class="btn" type="button" data-noise><svg class="i"><use href="#i-volume"/></svg><span class="js-noise-label">Noise</span></button>
+      </div>
+      <div class="row wrap" style="justify-content:center">
+        <div class="timer-presets" role="group" aria-label="Timer presets">
+          <button type="button" data-preset="25" class="active">25m</button>
+          <button type="button" data-preset="50">50m</button>
+          <button type="button" data-preset="90">90m</button>
+        </div>
+        <button class="btn btn-sm btn-ghost" type="button" id="focusBreakBtn"><svg class="i"><use href="#i-coffee"/></svg> 5m break</button>
+      </div>
+    </div>
+    <p class="tiny faint center mb-0">Tip: press <span class="kbd">Esc</span> to leave focus mode · timer keeps running.</p>
+  </div>
+
+  <!-- ============ TOASTS ============ -->
+  <div class="toast-wrap" id="toastWrap" role="status" aria-live="polite"></div>
+
+  <!-- ============ MISTAKE DIALOG ============ -->
+  <dialog class="modal lg" id="mistakeDialog" aria-labelledby="mistakeDialogTitle">
+    <div class="modal-head">
+      <div>
+        <h3 id="mistakeDialogTitle"><svg class="i" style="color:var(--danger)"><use href="#i-shield"/></svg> <span id="mistakeDialogTitleText">Log a mistake</span></h3>
+        <p>Capture the trap while it is fresh. Write the fix as a rule.</p>
+      </div>
+      <button class="modal-close" type="button" data-close-dialog="mistakeDialog" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <form id="mistakeForm" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="mistakeEditId" />
+        <div class="form-grid cols-2">
+          <div class="field span-2">
+            <label for="mTitle">Question / trap title <span class="faint">(required)</span></label>
+            <input class="input" id="mTitle" maxlength="180" required placeholder="e.g. MOSFET assumed saturation without checking V_DS" />
+          </div>
+          <div class="field">
+            <label for="mSubject">Subject</label>
+            <select class="select" id="mSubject"></select>
+          </div>
+          <div class="field">
+            <label for="mTopic">Subtopic</label>
+            <select class="select" id="mTopic"><option value="">General / not listed</option></select>
+          </div>
+          <div class="field">
+            <label for="mCause">Root cause</label>
+            <select class="select" id="mCause"></select>
+          </div>
+          <div class="field">
+            <label for="mSource">Source</label>
+            <select class="select" id="mSource">
+              <option>PYQ</option><option>Mock test</option><option>Practice set</option><option>Study session</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="mType">Question type</label>
+            <select class="select" id="mType"><option value="MCQ">MCQ</option><option value="MSQ">MSQ</option><option value="NAT">NAT</option><option value="Concept">Concept</option></select>
+          </div>
+          <div class="field">
+            <label for="mMarks">Question marks</label>
+            <select class="select" id="mMarks"><option value="1">1 mark</option><option value="2" selected>2 marks</option><option value="0">Not mark-based</option></select>
+          </div>
+          <div class="field">
+            <label for="mNeg">Negative penalty</label>
+            <input class="input" id="mNeg" type="number" min="0" step="0.01" value="0.67" />
+          </div>
+          <div class="field">
+            <label for="mOpp">Opportunity loss</label>
+            <input class="input" id="mOpp" type="number" min="0" step="0.5" value="2" />
+          </div>
+          <div class="field span-2">
+            <label for="mWrong">What went wrong</label>
+            <textarea class="textarea" id="mWrong" rows="2" placeholder="The exact wrong step, assumption or misread."></textarea>
+          </div>
+          <div class="field span-2">
+            <label for="mFix">Golden fix / rule <span class="faint">(required)</span></label>
+            <textarea class="textarea" id="mFix" rows="2" required placeholder="A checkable rule you will apply next time."></textarea>
+          </div>
+          <div class="span-2">
+            <div class="row-between" style="margin-bottom:6px">
+              <span class="field-label">Screenshot (optional)</span>
+              <span class="tiny faint">Paste with Ctrl+V · compressed locally</span>
+            </div>
+            <div class="dropzone" id="mDropzone" tabindex="0" role="button" aria-label="Add a screenshot">
+              <svg class="i"><use href="#i-image"/></svg>
+              <div><strong class="strong">Drop, paste or choose an image</strong></div>
+              <div class="tiny">PNG / JPG / WebP · stored in this browser only</div>
+            </div>
+            <input type="file" id="mImage" accept="image/*" hidden />
+            <div class="img-preview" id="mImgPreview" hidden>
+              <img id="mImgPreviewImg" alt="Mistake screenshot preview" />
+              <button type="button" id="mImgRemove" aria-label="Remove screenshot"><svg class="i"><use href="#i-x"/></svg></button>
+            </div>
+          </div>
+          <div class="span-2">
+            <div class="row-between" style="background:var(--bg-2);border:1px solid var(--border-soft);border-radius:10px;padding:8px 11px">
+              <span class="small muted">Estimated marks lost</span>
+              <strong class="mono" id="mLossPreview" style="color:var(--danger)">3.67</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-dialog="mistakeDialog">Cancel</button>
+        <button class="btn btn-primary" type="submit" id="mistakeSaveBtn"><svg class="i"><use href="#i-check"/></svg> Save to vault</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ FLASHCARD DECK DIALOG ============ -->
+  <dialog class="modal" id="deckDialog" aria-labelledby="deckDialogTitle">
+    <div class="modal-head">
+      <div>
+        <h3 id="deckDialogTitle"><svg class="i" style="color:var(--accent-2)"><use href="#i-layers"/></svg> Active recall deck</h3>
+        <p id="deckDialogSub">1 → 3 → 7 → 21 → 45 day spacing</p>
+      </div>
+      <button class="modal-close" type="button" data-close-dialog="deckDialog" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body" id="deckBody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" type="button" data-close-dialog="deckDialog">Close</button>
+    </div>
+  </dialog>
+
+  <!-- ============ DISTRACTION DIALOG ============ -->
+  <dialog class="modal md" id="distractionDialog" aria-labelledby="distractionDialogTitle">
+    <div class="modal-head">
+      <div>
+        <h3 id="distractionDialogTitle"><svg class="i" style="color:var(--warn)"><use href="#i-alert"/></svg> Name the distraction</h3>
+        <p>Naming it cuts its power. Pick the closest cause.</p>
+      </div>
+      <button class="modal-close" type="button" data-close-dialog="distractionDialog" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div id="distractionList" class="stack-sm"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" type="button" data-close-dialog="distractionDialog">Cancel</button>
+    </div>
+  </dialog>
+
+  <!-- ============ SETTINGS DIALOG ============ -->
+  <dialog class="modal lg" id="settingsDialog" aria-labelledby="settingsDialogTitle">
+    <div class="modal-head">
+      <div>
+        <h3 id="settingsDialogTitle"><svg class="i"><use href="#i-settings"/></svg> Settings</h3>
+        <p>Goals, appearance and your data.</p>
+      </div>
+      <button class="modal-close" type="button" data-close-dialog="settingsDialog" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form id="settingsForm" class="form-grid cols-2">
+        <div class="field span-2">
+          <label for="setTarget">Target score / rank</label>
+          <input class="input" id="setTarget" maxlength="60" placeholder="78+ marks (AIR &lt; 50)" />
+        </div>
+        <div class="field">
+          <label for="setExamDate">Exam date</label>
+          <input class="input" id="setExamDate" type="date" required />
+        </div>
+        <div class="field">
+          <label for="setDailyGoal">Daily focus goal (minutes)</label>
+          <input class="input" id="setDailyGoal" type="number" min="15" max="900" step="5" />
+        </div>
+        <div class="field">
+          <label for="setTheme">Theme</label>
+          <select class="select" id="setTheme"><option value="dark">Dark</option><option value="light">Light</option></select>
+        </div>
+        <div class="field">
+          <label for="setNotify">Reminder notifications</label>
+          <select class="select" id="setNotify"><option value="off">In-app only</option><option value="on">Browser notifications</option></select>
+        </div>
+        <div class="form-actions span-2">
+          <button class="btn btn-primary" type="submit"><svg class="i"><use href="#i-check"/></svg> Save settings</button>
+        </div>
+      </form>
+
+      <hr class="divider" />
+
+      <div class="card-head" style="margin-bottom:8px"><div><h3><svg class="i"><use href="#i-database"/></svg> Your data</h3><p>Everything is stored locally in this browser.</p></div></div>
+      <div class="row wrap">
+        <button class="btn" type="button" id="exportJsonBtn"><svg class="i"><use href="#i-download"/></svg> Backup (JSON)</button>
+        <button class="btn" type="button" id="exportCsvBtn"><svg class="i"><use href="#i-download"/></svg> Mistakes (CSV)</button>
+        <button class="btn" type="button" id="importBtn"><svg class="i"><use href="#i-upload"/></svg> Restore backup</button>
+        <input type="file" id="importInput" accept=".json,application/json" hidden />
+      </div>
+      <div class="row wrap mt-2">
+        <button class="btn btn-ghost" type="button" id="loadDemoBtn">Load demo data</button>
+        <button class="btn btn-ghost" type="button" id="clearDemoBtn">Remove demo data</button>
+        <button class="btn btn-danger" type="button" id="resetAllBtn">Reset everything</button>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="card-head" style="margin-bottom:8px"><div><h3><svg class="i"><use href="#i-key"/></svg> Shortcuts</h3></div></div>
+      <div class="grid grid-2 small muted">
+        <div class="row-between"><span>Log a mistake</span><span><span class="kbd">Alt</span> + <span class="kbd">Q</span></span></div>
+        <div class="row-between"><span>Start / pause timer</span><span><span class="kbd">Alt</span> + <span class="kbd">T</span></span></div>
+        <div class="row-between"><span>Focus mode</span><span><span class="kbd">Alt</span> + <span class="kbd">F</span></span></div>
+        <div class="row-between"><span>Close dialog</span><span><span class="kbd">Esc</span></span></div>
+      </div>
+
+      <p class="tiny faint mt-3 mb-0" id="appVersionLine">GATE ECE Study OS · offline-first</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" type="button" data-close-dialog="settingsDialog">Done</button>
+    </div>
+  </dialog>
+
+  <!-- ============ ONBOARDING DIALOG ============ -->
+  <dialog class="modal md" id="onboardDialog" aria-labelledby="onboardTitle">
+    <div class="modal-head">
+      <div>
+        <h3 id="onboardTitle"><svg class="i" style="color:var(--accent)"><use href="#i-sparkles"/></svg> Welcome to your study OS</h3>
+        <p>Two minutes of setup, then everything stays on this device.</p>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid cols-2">
+        <div class="field span-2">
+          <label for="onboardTarget">Target score / rank</label>
+          <input class="input" id="onboardTarget" maxlength="60" value="78+ marks (AIR &lt; 50)" />
+        </div>
+        <div class="field">
+          <label for="onboardDate">Exam date</label>
+          <input class="input" id="onboardDate" type="date" />
+        </div>
+        <div class="field">
+          <label for="onboardGoal">Daily focus goal</label>
+          <select class="select" id="onboardGoal"><option value="120">2 hours</option><option value="240" selected>4 hours</option><option value="360">6 hours</option><option value="480">8 hours</option></select>
+        </div>
+      </div>
+      <div class="note-box fix mt-3" style="font-size:12px">
+        <strong>Start clean or explore</strong>
+        Demo data is clearly marked and removable in one click from Settings.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" type="button" id="onboardDemoBtn"><svg class="i"><use href="#i-layers"/></svg> Explore with demo</button>
+      <button class="btn btn-primary" type="button" id="onboardStartBtn"><svg class="i"><use href="#i-check"/></svg> Start empty</button>
+    </div>
+  </dialog>
+
+  <!-- ============ CONFIRM DIALOG ============ -->
+  <dialog class="modal md" id="confirmDialog" aria-labelledby="confirmTitle">
+    <div class="modal-head">
+      <div><h3 id="confirmTitle">Confirm</h3><p id="confirmSub">This action needs confirmation.</p></div>
+      <button class="modal-close" type="button" data-close-dialog="confirmDialog" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body"><div id="confirmBody" class="small muted"></div></div>
+    <div class="modal-foot">
+      <button class="btn" type="button" id="confirmCancelBtn">Cancel</button>
+      <button class="btn btn-primary" type="button" id="confirmOkBtn">Confirm</button>
+    </div>
+  </dialog>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <dialog class="modal lg" id="lightboxDialog" aria-labelledby="lightboxTitle">
+    <div class="modal-head">
+      <div><h3 id="lightboxTitle">Screenshot</h3></div>
+      <button class="modal-close" type="button" data-close-dialog="lightboxDialog" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body center"><img id="lightboxImg" alt="Mistake screenshot" style="width:100%;height:auto;border-radius:10px" /></div>
+  </dialog>
+
+  <noscript>
+    <div style="position:fixed;inset:0;background:#080b12;color:#fff;padding:40px;z-index:200">
+      <h1>JavaScript is required</h1>
+      <p>Enable JavaScript to use the study OS. Your data never leaves this device.</p>
+    </div>
+  </noscript>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

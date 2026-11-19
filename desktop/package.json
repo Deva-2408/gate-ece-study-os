@@ -1,0 +1,65 @@
+{
+  "name": "gate-ece-study-os",
+  "productName": "GATE ECE Study OS",
+  "version": "2.0.0",
+  "description": "Offline-first GATE ECE study, mistake and revision command center",
+  "author": "GATE ECE Study OS",
+  "license": "MIT",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "prepare-renderer": "node scripts/prepare-renderer.mjs",
+    "start": "npm run prepare-renderer && electron .",
+    "dist": "npm run prepare-renderer && electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0",
+    "sharp": "^0.34.0"
+  },
+  "build": {
+    "appId": "com.gateos.study",
+    "productName": "GATE ECE Study OS",
+    "copyright": "Copyright © 2026 GATE ECE Study OS",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "renderer/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "GATE-ECE-Study-OS-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "GATE ECE Study OS",
+      "uninstallDisplayName": "GATE ECE Study OS",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "license": "build/license.txt"
+    }
+  },
+  "allowScripts": {
+    "electron@38.8.6": true,
+    "sharp@0.34.5": true,
+    "electron-winstaller@5.4.0": true
+  }
+}

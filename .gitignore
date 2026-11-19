@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+desktop/dist/
+android/.gradle/
+android/build/
+android/app/build/
+
+# Android signing secrets (never publish)
+android/keystore.properties
+android/keystore/*.jks
+android/keystore/*.keystore
+
+# Personal files
+Devkant Photo.jpeg
+Devkant Sign.jpeg
+
+# Release binaries (published as GitHub Release assets instead)
+release/*.exe
+release/*.apk
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+*.tmp

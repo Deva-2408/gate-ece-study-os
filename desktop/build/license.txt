@@ -1,0 +1,10 @@
+GATE ECE Study OS
+
+A free, offline-first study app for GATE Electronics and Communication
+Engineering preparation.
+
+This software is provided "as is", without warranty of any kind. Your study
+data is stored only on this device. Back it up regularly from
+Settings > Data > Export backup.
+
+You may copy and share this installer with friends at no charge.
