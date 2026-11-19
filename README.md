@@ -4,6 +4,8 @@ A focused, offline-first study command center for GATE ECE prep. Track the sylla
 
 Built as a dependency-free static site: plain HTML, CSS, and vanilla JavaScript. No build step, no CDN, no framework, no tracking.
 
+![GATE ECE Study OS dashboard with demo data](desktop/shots/desktop-packaged.png)
+
 ---
 
 ## Quick start
